@@ -1,0 +1,7 @@
+
+# requirements.txt for fpga-cnn-deployment
+# This file lists all Python dependencies required to run scripts and tools in this repository.
+# Use this file with `pip install -r requirements.txt` to install all dependencies.
+
+# Used for downloading imagenet subset from Kaggle
+kagglehub
