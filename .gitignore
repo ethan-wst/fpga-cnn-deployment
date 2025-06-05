@@ -1,16 +1,8 @@
 # Model binaries and FPGA outputs
 *.xmodel
-*.xir
-*.rpt
-compiled/
-quantized/
-
-# HLS build outputs
-hls/solution*/syn/*
-hls/solution*/impl/*
+*.onnx
 
 # Large datasets and results
-models/*
 data/imagenet/imagenet_val_subset/
 data/benchmark_results/*.csv
 data/benchmark_results/*.png
