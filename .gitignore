@@ -1,0 +1,5 @@
+*.xmodel
+*.xir
+*.rpt
+hls/solution*/syn/*
+compiled/*
