@@ -40,3 +40,4 @@ Thumbs.db
 docs/_build/
 
 # Ignore any other large or user-specific files
+Vitis-AI/
