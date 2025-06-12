@@ -1,32 +1,72 @@
+# =============================================================================
+# FPGA-CNN Deployment .gitignore
+# =============================================================================
+
+# -----------------------------------------------------------------------------
 # Model binaries and FPGA outputs
+# -----------------------------------------------------------------------------
 *.xmodel
 *.onnx
+models/onnx/standard/
+models/onnx/quantized/
 
+# Exceptions - keep directory structure with .gitkeep
+!models/onnx/standard/.gitkeep
+!models/onnx/quantized/.gitkeep
+
+# -----------------------------------------------------------------------------
 # Large datasets and results
-data/imagenet/imagenet_val_subset/
-data/benchmark_results/*.csv
-data/benchmark_results/*.png
+# -----------------------------------------------------------------------------
+# Directories with large files
+data/imagenet/cal_subset/
+data/imagenet/val_subset/
+data/results/benchmark/*
+data/results/quantization/*
+
+# Exceptions - keep directory structure with .gitkeep
+!data/results/benchmark/.gitkeep
+!data/results/quantization/.gitkeep
+
+# -----------------------------------------------------------------------------
+# Vitis-AI directory
+# -----------------------------------------------------------------------------
+Vitis-AI/
+
+# -----------------------------------------------------------------------------
+# Python related
+# -----------------------------------------------------------------------------
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+ENV/
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 notebooks/.ipynb_checkpoints/
 
-# Python cache and virtual environments
-__pycache__/
-*.py[cod]
-*$py.class
-.venv/
-venv/
-ENV/
-
-# VSCode and editor settings
+# -----------------------------------------------------------------------------
+# IDE and editor settings
+# -----------------------------------------------------------------------------
 .vscode/
+.idea/
+*.swp
+*.swo
 
+# -----------------------------------------------------------------------------
 # OS and user files
+# -----------------------------------------------------------------------------
 .DS_Store
 Thumbs.db
+Desktop.ini
 
+# -----------------------------------------------------------------------------
 # Logs, temp, and archives
+# -----------------------------------------------------------------------------
 *.log
 *.tmp
 *.bak
@@ -36,8 +76,7 @@ Thumbs.db
 *.tar.gz
 *.tar
 
+# -----------------------------------------------------------------------------
 # Documentation build outputs
+# -----------------------------------------------------------------------------
 docs/_build/
-
-# Ignore any other large or user-specific files
-Vitis-AI/

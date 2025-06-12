@@ -1,5 +1,5 @@
-# mobilenetv2_onnx_benchmark.py
-# Benchmark MobileNetV2 ONNX models from local directory on ImageNet_SubSet
+# resnet50_onnx_benchmark.py
+# Benchmark ResNet50 ONNX models from local directory on ImageNet_SubSet
 
 import numpy as np
 import onnxruntime as ort
@@ -16,24 +16,24 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # --- Argument Parser ---
-parser = argparse.ArgumentParser(description='Benchmark MobileNetV2 ONNX models')
-parser.add_argument('--model', type=str, default='mobilenet_v2', 
-                    choices=['mobilenet_v2', 'mobilenet_v2_quant'], 
-                    help='Model name: mobilenet_v2, mobilenet_v2_quant')
+parser = argparse.ArgumentParser(description='Benchmark ResNet50 ONNX models')
+parser.add_argument('--model', type=str, default='resnet50', 
+                    choices=['resnet50', 'resnet50_quant'], 
+                    help='Model name: resnet50, resnet50_quant')
 parser.add_argument('--device', type=str, default='cpu', choices=['cpu', 'cuda'], 
                    help='Device to run the benchmark on')
 parser.add_argument('--imagenet_dir', type=str, 
-                   default=os.path.abspath(os.path.join(os.path.dirname(__file__), '../../imagenet/imagenet_subset')), 
+                   default=os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../data/imagenet/val_subset')), 
                    help='Path to ImageNet_SubSet directory')
 parser.add_argument('--models_dir', type=str, 
-                   default=os.path.abspath(os.path.join(os.path.dirname(__file__), '../../models')), 
+                   default=os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../models/onnx')), 
                    help='Directory with ONNX models')
 args = parser.parse_args()
 
 # --- Map model names to file paths ---
 MODEL_FILES = {
-    'mobilenet_v2': os.path.join(args.models_dir, 'mobilenetv2-12.onnx'),
-    'mobilenet_v2_quant': os.path.join(args.models_dir, 'mobilenetv2-12-int8.onnx')
+    'resnet50': os.path.join(args.models_dir, 'standard/resnet50-v1-12.onnx'),
+    'resnet50_quant': os.path.join(args.models_dir, 'quantized/resnet50-v1-12-int8.onnx')
 }
 
 # --- Device Setup for ONNX Runtime ---

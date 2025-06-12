@@ -23,17 +23,17 @@ parser.add_argument('--model', type=str, default='efficientnet_lite4',
 parser.add_argument('--device', type=str, default='cpu', choices=['cpu', 'cuda'], 
                    help='Device to run the benchmark on')
 parser.add_argument('--imagenet_dir', type=str, 
-                   default=os.path.abspath(os.path.join(os.path.dirname(__file__), '../../imagenet/imagenet_subset')), 
+                   default=os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../data/imagenet/val_subset')), 
                    help='Path to ImageNet_SubSet directory')
 parser.add_argument('--models_dir', type=str, 
-                   default=os.path.abspath(os.path.join(os.path.dirname(__file__), '../../models')), 
+                   default=os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../models/onnx')), 
                    help='Directory with ONNX models')
 args = parser.parse_args()
 
 # --- Map model names to file paths ---
 MODEL_FILES = {
-    'efficientnet_lite4': os.path.join(args.models_dir, 'efficientnet-lite4-11.onnx'),
-    'efficientnet_lite4_quant': os.path.join(args.models_dir, 'efficientnet-lite4-11-int8.onnx')
+    'efficientnet_lite4': os.path.join(args.models_dir, 'standard/efficientnet-lite4-11.onnx'),
+    'efficientnet_lite4_quant': os.path.join(args.models_dir, 'quantized/efficientnet-lite4-11-int8.onnx')
 }
 
 # --- Device Setup for ONNX Runtime ---

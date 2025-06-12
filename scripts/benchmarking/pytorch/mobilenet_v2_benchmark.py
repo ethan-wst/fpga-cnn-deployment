@@ -1,10 +1,10 @@
-# resnet50_benchmark.py
-# Benchmark ResNet50 (unquantized and quantized) using PyTorch
+# mobilenet_v2_benchmark.py
+# Benchmark MobileNetV2 (unquantized and quantized) using PyTorch
 
 import torch
 import torchvision.models as models
-from torchvision.models import ResNet50_Weights
-from torchvision.models.quantization import ResNet50_QuantizedWeights
+from torchvision.models import MobileNet_V2_Weights
+from torchvision.models.quantization import MobileNet_V2_QuantizedWeights
 import argparse
 import time
 import csv
@@ -13,15 +13,15 @@ from PIL import Image
 from torchvision import transforms
 import json
 
-parser = argparse.ArgumentParser(description='Benchmark ResNet50 (unquantized and quantized)')
-parser.add_argument('--model', type=str, default='resnet50', 
-                    choices=['resnet50', 'resnet50_quant'], 
+parser = argparse.ArgumentParser(description='Benchmark MobileNetV2 (unquantized and quantized)')
+parser.add_argument('--model', type=str, default='mobilenet_v2', 
+                    choices=['mobilenet_v2', 'mobilenet_v2_quant'], 
                     help='Model name')
 parser.add_argument('--device', type=str, default='cpu', 
                     choices=['cpu', 'cuda'], 
                     help='Device to run the benchmark on')
 parser.add_argument('--imagenet_dir', type=str, 
-                    default=os.path.abspath(os.path.join(os.path.dirname(__file__), '../../imagenet/imagenet_subset')), 
+                    default=os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../data/imagenet/val_subset')), 
                     help='Path to ImageNet_SubSet directory')
 args = parser.parse_args()
 
@@ -31,12 +31,12 @@ else:
     device = torch.device("cpu")
 print(f"Running on: {device}")
 
-if args.model == 'resnet50_quant':
-    weights = ResNet50_QuantizedWeights.DEFAULT
-    model = models.quantization.resnet50(quantize=True, weights=weights)
-elif args.model == 'resnet50':
-    weights = ResNet50_Weights.DEFAULT
-    model = models.resnet50(weights=weights)
+if args.model == 'mobilenet_v2_quant':
+    weights = MobileNet_V2_QuantizedWeights.DEFAULT
+    model = models.quantization.mobilenet_v2(quantize=True, weights=weights)
+elif args.model == 'mobilenet_v2':
+    weights = MobileNet_V2_Weights.DEFAULT
+    model = models.mobilenet_v2(weights=weights)
 else:
     raise ValueError(f"Unknown model: {args.model}")
 

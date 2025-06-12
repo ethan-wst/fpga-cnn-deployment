@@ -1,10 +1,10 @@
-# resnet18_benchmark.py
-# Benchmark ResNet18 (unquantized and quantized) using PyTorch
+# resnet50_benchmark.py
+# Benchmark ResNet50 (unquantized and quantized) using PyTorch
 
 import torch
 import torchvision.models as models
-from torchvision.models import ResNet18_Weights
-from torchvision.models.quantization import ResNet18_QuantizedWeights
+from torchvision.models import ResNet50_Weights
+from torchvision.models.quantization import ResNet50_QuantizedWeights
 import argparse
 import time
 import csv
@@ -13,15 +13,15 @@ from PIL import Image
 from torchvision import transforms
 import json
 
-parser = argparse.ArgumentParser(description='Benchmark ResNet18 (unquantized and quantized)')
-parser.add_argument('--model', type=str, default='resnet18', 
-                    choices=['resnet18', 'resnet18_quant'], 
+parser = argparse.ArgumentParser(description='Benchmark ResNet50 (unquantized and quantized)')
+parser.add_argument('--model', type=str, default='resnet50', 
+                    choices=['resnet50', 'resnet50_quant'], 
                     help='Model name')
 parser.add_argument('--device', type=str, default='cpu', 
                     choices=['cpu', 'cuda'], 
                     help='Device to run the benchmark on')
 parser.add_argument('--imagenet_dir', type=str, 
-                    default=os.path.abspath(os.path.join(os.path.dirname(__file__), '../../imagenet/imagenet_subset')), 
+                    default=os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../data/imagenet/val_subset')), 
                     help='Path to ImageNet_SubSet directory')
 args = parser.parse_args()
 
@@ -31,12 +31,12 @@ else:
     device = torch.device("cpu")
 print(f"Running on: {device}")
 
-if args.model == 'resnet18_quant':
-    weights = ResNet18_QuantizedWeights.DEFAULT
-    model = models.quantization.resnet18(quantize=True, weights=weights)
-elif args.model == 'resnet18':
-    weights = ResNet18_Weights.DEFAULT
-    model = models.resnet18(weights=weights)
+if args.model == 'resnet50_quant':
+    weights = ResNet50_QuantizedWeights.DEFAULT
+    model = models.quantization.resnet50(quantize=True, weights=weights)
+elif args.model == 'resnet50':
+    weights = ResNet50_Weights.DEFAULT
+    model = models.resnet50(weights=weights)
 else:
     raise ValueError(f"Unknown model: {args.model}")
 

@@ -3,60 +3,109 @@
 ## Overview
 This repository provides scripts, models, and tools for benchmarking and deploying CNN models (such as MobileNetV2, EfficientNet, and ResNet50) on FPGA hardware. It supports model conversion, quantization, benchmarking, and visualization of inference results using a subset of the ImageNet validation dataset.
 
+## Quick Start Guide
+
+### 1. Set Up Your Environment
+
+```bash
+# Create and activate a conda environment
+conda create -n fpga-cnn python=3.12
+conda activate fpga-cnn
+
+# Install dependencies
+pip install --upgrade pip
+pip install -r requirements.txt
+
+# Verify your installation
+python env_check.py
+```
+
+*For GPU acceleration (recommended for benchmarking), refer to the `requirements.txt` file*
+
+### 2. Prepare Data
+
+Place your ImageNet validation subset in `data/imagenet/val_subset/` and calibration subset in `data/imagenet/cal_subset/`. Make sure `data/imagenet/imagenet_class_index.json` is available.
+
+### 3. Run Benchmarks
+
+```bash
+# Run all ONNX model benchmarks on CPU
+python scripts/benchmarking/onnx_benchmark.py --device cpu
+
+# Run specific PyTorch model benchmark on GPU (if available)
+python scripts/benchmarking/pytorch/resnet50_benchmark.py --device cuda
+
+# Visualize benchmark results
+python scripts/benchmarking/plot_benchmark.py
+```
+
+### 4. Model Conversion & Quantization
+
+Refer to the scripts in `scripts/quantization/` directory for converting and quantizing models.
+
+### 5. FPGA Deployment
+
+Refer to the scripts in `scripts/deployment/` directory for compiling models for FPGA deployment.
+
 ## Directory Structure
 
 ```
-models/           # Original or ONNX-exported models
-quantized/        # INT8 models (quantized)
-compiled/         # FPGA-compiled .xmodel files
-hls/              # HLS ops (custom or upcoming)
-scripts/          # Benchmarking and utility scripts
-  benchmark_scripts/
-    onnx_benchmark.py
-    plot_benchmark.py
-    pytorch_benchmark.py
-    onnx/
-      efficientnet_lite4_onnx_benchmark.py
-      mobilenet_v2_onnx_benchmark.py
-      resnet50_onnx_benchmark.py
-    pytorch/
-      mobilenet_v2_benchmark.py
-      mobilenet_v3_large_benchmark.py
-      resnet18_benchmark.py
-      resnet50_benchmark.py
-data/             # Inference results, calibration sets, and datasets
-  benchmark_results/
-    onnx_benchmark_results.csv
-    pytorch_benchmark_results.csv
-  imagenet_val_set/
-    imagenet_class_index.json
-notebooks/        # Optional interactive work (Jupyter, etc.)
-docs/             # Diagrams, slides, and documentation
-README.md         # Project overview and instructions
-.gitignore        # Ignore model binaries, logs, etc.
+fpga-cnn-deployment/
+├── models/                       # Model storage
+│   └── onnx/                     # ONNX format models
+│       ├── standard/             # Standard ONNX models
+│       └── quantized/            # Quantized ONNX models
+├── data/                         # All data related files
+│   ├── imagenet/                 # ImageNet dataset subsets
+│   │   ├── cal_subset/           # Calibration set
+│   │   └── val_subset/           # Validation set
+│   └── results/                  # All benchmark and inference results
+├── scripts/                      # All scripts
+│   ├── benchmarking/             # Benchmarking scripts
+│   ├── quantization/             # Quantization scripts
+│   └── deployment/               # Deployment scripts
+├── utils/                        # Utility functions used across scripts
+├── env_check.py                  # Environment verification script
+└── README.md                     # Project overview and instructions
 ```
 
-## Getting Started
+## Common Tasks
 
-1. **Set up your environment:**
-   - Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) if not already installed.
-   - Create and activate a conda environment:
-     ```sh
-     conda create -n fpga-cnn python=3.10
-     conda activate fpga-cnn
-     pip install --upgrade pip
-     pip install -r requirements.txt
-     ```
+### Running a Single Model Benchmark
 
-2. **Prepare ImageNet subset and class index:**
-   - Download the ImageNet validation subset (update when kaggle is public)
-   - Place the validation images in `data/imagenet/imagenet_val_set/`.
+```bash
+# Run ResNet50 ONNX benchmark
+python scripts/benchmarking/onnx/resnet50_onnx_benchmark.py --device cpu
 
+# Run MobileNetV2 PyTorch benchmark
+python scripts/benchmarking/pytorch/mobilenet_v2_benchmark.py --device cpu
+```
+
+### Visualizing Results
+
+```bash
+# Generate benchmark comparison plots
+python scripts/benchmarking/plot_benchmark.py
+```
+
+### Checking Environment
+
+```bash
+# Verify your environment setup
+python env_check.py
+```
+
+## Troubleshooting
+
+- **Missing CUDA support?** Check requirements.txt for GPU installation instructions
+- **Model not found?** Place models in their respective directories under `models/`
+- **Import errors?** Verify your environment with `python env_check.py`
 
 ## Notes
-- Large datasets and model binaries are not tracked in git (see `.gitignore`).
-- All scripts are designed to be run from the `scripts/benchmark_scripts/` directory unless otherwise noted.
-- For best results, use Python 3.8+ and the package versions in `requirements.txt`.
+
+- Large datasets and model binaries are not tracked in Git (see `.gitignore`)
+- For best performance, use a CUDA-compatible GPU with appropriate drivers
+- The Vitis-AI directory is excluded from version control
 
 ## License
-See `data/imagenet_val_set/ILSVRC2012_devkit_t12/COPYING` for the ImageNet devkit license and refer to individual model licenses as needed.
+Refer to individual model licenses as needed. ImageNet usage is subject to its terms and conditions.

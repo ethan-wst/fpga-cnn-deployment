@@ -1,7 +1,72 @@
 
 # requirements.txt for fpga-cnn-deployment
 # This file lists all Python dependencies required to run scripts and tools in this repository.
-# Use this file with `pip install -r requirements.txt` to install all dependencies.
+# 
+# Installation:
+# 1. For CPU-only: 
+#    pip install -r requirements.txt
+#
+# 2. For GPU support (recommended method): 
+#    ./install_gpu.sh
+#    
+# 3. For GPU support (manual method):
+#    a. Install the base requirements: 
+#       pip install -r requirements.txt
+#    b. Install PyTorch with CUDA:
+#       pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+#    c. Install ONNX Runtime with GPU support:
+#       pip install onnxruntime-gpu
+#    
+# Note: For GPU support, ensure your NVIDIA drivers and CUDA toolkit are installed and compatible.
+#
+# -----------------------------------------------------------------------------
+# Core dependencies
+# -----------------------------------------------------------------------------
 
-# Used for downloading imagenet subset from Kaggle
-kagglehub
+# Deep learning frameworks
+torch>=2.0.0
+torchvision>=0.15.0
+
+# ONNX runtime for model inference
+onnxruntime>=1.15.0
+
+# Data processing and visualization
+numpy>=1.24.0
+pandas>=2.0.0
+matplotlib>=3.7.0
+pillow>=10.0.0
+opencv-python>=4.8.0
+
+# -----------------------------------------------------------------------------
+# CUDA support configurations
+# -----------------------------------------------------------------------------
+# Use the appropriate configuration based on your CUDA version.
+
+# For CUDA 12.6 - Use these exact commands instead of pip requirements:
+# pip install torch==2.7.0 torchvision==0.18.0 --index-url https://download.pytorch.org/whl/cu126
+# pip install onnxruntime-gpu==1.19.0
+
+# For CUDA 12.8 - Use these exact commands instead of pip requirements:
+# pip install torch==2.7.0 torchvision==0.18.0 --index-url https://download.pytorch.org/whl/cu128
+# pip install onnxruntime-gpu==1.19.0
+
+# Compatibility Note: When using ONNX Runtime with GPU support, make sure:
+# 1. CUDA version is compatible with your GPU drivers
+# 2. ONNX Runtime version is compatible with PyTorch version
+# 3. For deployment to FPGA, use the CPU version of ONNX Runtime unless you need GPU for development
+
+# -----------------------------------------------------------------------------
+# Development dependencies (for contributors)
+# -----------------------------------------------------------------------------
+# Uncomment these if you're contributing to the codebase:
+# pytest>=7.0.0
+# black>=23.0.0
+# isort>=5.12.0
+# flake8>=6.0.0
+# jupyter>=1.0.0
+
+# -----------------------------------------------------------------------------
+# Environment verification
+# -----------------------------------------------------------------------------
+# After installation, run the environment check script to verify everything is set up correctly:
+# python env_check.py
