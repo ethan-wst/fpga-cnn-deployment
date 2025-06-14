@@ -8,21 +8,19 @@ This directory contains scripts for deploying quantized models to Xilinx FPGAs u
 - Docker installed and configured
 - Quantized models available in the `models/onnx/quantized/` directory
 
-## Scripts
+## Docker Container
 
-### `vitisai_launch.sh`
-
-A utility script for launching the Vitis AI Docker container with the appropriate volume mounts and configurations. This script is used by other tools in the repository such as the quantization scripts.
+The project uses a centralized Docker launcher script located in the project root directory:
 
 ```bash
 # To run a command in the Vitis AI container:
-./vitisai_launch.sh <command>
+../../run_vitis_docker.sh <command>
 
 # For example:
-./vitisai_launch.sh python /workspace/my_script.py
+../../run_vitis_docker.sh python scripts/quantization/quantize_model.py --model model.pth
 
 # To get an interactive shell:
-./vitisai_launch.sh
+../../run_vitis_docker.sh
 ```
 
 ## Deployment Process

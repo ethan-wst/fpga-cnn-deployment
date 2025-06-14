@@ -37,8 +37,6 @@ logger = logging.getLogger("vitis_quantize")
 
 class ModelFormat(Enum):
     PYTORCH = 'pytorch'
-    ONNX = 'onnx'
-    TENSORFLOW = 'tensorflow'
 
 class QuantPrecision(Enum):
     INT8 = 'int8'
@@ -102,11 +100,9 @@ def load_calibration_dataset(calib_dir, batch_size=32, max_samples=1000, random_
     logger.info(f"Selected {len(image_files)} calibration images")
     return image_files
 
-# Import model-specific quantizers
+# Import model-specific quantizer
 # Using absolute imports instead of relative imports to fix execution as main script
 from scripts.quantization.pytorch_quantizer import quantize_pytorch_model
-from scripts.quantization.onnx_quantizer import quantize_onnx_model
-from scripts.quantization.tensorflow_quantizer import quantize_tensorflow_model
 
 def get_output_dir(model_path, output_base_dir):
     """Generate appropriate output directory based on model path and format"""
@@ -118,7 +114,7 @@ def get_output_dir(model_path, output_base_dir):
 def main():
     parser = argparse.ArgumentParser(description="Quantize models for Vitis AI deployment")
     parser.add_argument('--model', required=True, help='Path to the model file')
-    parser.add_argument('--format', required=True, choices=['pytorch', 'onnx', 'tensorflow'], 
+    parser.add_argument('--format', required=True, choices=['pytorch'], 
                         help='Format of the input model')
     parser.add_argument('--calib_dataset', default=IMAGENET_CAL_DIR, 
                         help=f'Path to calibration dataset (default: {IMAGENET_CAL_DIR})')
@@ -172,12 +168,8 @@ def main():
     # Dispatch based on model format
     model_format = ModelFormat(args.format)
     
-    if model_format == ModelFormat.PYTORCH:
-        success = quantize_pytorch_model(args.model, args.output_dir, calib_dataset, options)
-    elif model_format == ModelFormat.ONNX:
-        success = quantize_onnx_model(args.model, args.output_dir, calib_dataset, options)
-    elif model_format == ModelFormat.TENSORFLOW:
-        success = quantize_tensorflow_model(args.model, args.output_dir, calib_dataset, options)
+    # Only PyTorch models are supported
+    success = quantize_pytorch_model(args.model, args.output_dir, calib_dataset, options)
     
     if success:
         logger.info(f"Model quantization completed successfully")

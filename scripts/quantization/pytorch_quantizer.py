@@ -41,7 +41,7 @@ def load_pytorch_model(model_path, device='cpu'):
         logger.error(f"Failed to load PyTorch model: {str(e)}")
         return None
 
-def prepare_calibration_loader(calib_dataset, batch_size=32, transform=None):
+def prepare_calibration_loader(calib_dataset, batch_size=32, transform=None, options=None):
     """Create a data loader for calibration images"""
     from torch.utils.data import DataLoader, Dataset
     from utils.image_utils import get_imagenet_transforms
@@ -63,7 +63,19 @@ def prepare_calibration_loader(calib_dataset, batch_size=32, transform=None):
     
     # Create dataset and loader
     dataset = CalibrationDataset(calib_dataset, transform)
-    loader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=4)
+    
+    # Use reasonable defaults for batch size and workers
+    batch_size = min(8, batch_size)
+    num_workers = 2
+    
+    # Create DataLoader with appropriate settings
+    loader = DataLoader(
+        dataset, 
+        batch_size=batch_size,
+        shuffle=True, 
+        num_workers=num_workers,
+        pin_memory=False  # Disable pinned memory to reduce shared memory usage
+    )
     
     return loader
 
@@ -125,7 +137,7 @@ def quantize_model(model, calib_loader, output_dir, options):
         # Save quantized model to .xmodel format for deployment
         if deploy_check:
             output_xmodel_path = os.path.join(output_dir, "deploy.xmodel")
-            dump_xmodel(quantizer=quantizer, output_dir=output_dir, deploy_check=deploy_check)
+            quantizer.export_xmodel(output_dir=output_dir)
             logger.info(f"Exported deploy model to {output_xmodel_path}")
         
         # Also save the PyTorch quantized model for reference
@@ -148,7 +160,7 @@ def quantize_pytorch_model(model_path, output_dir, calib_dataset, options):
         return False
     
     # 2. Prepare the calibration data loader
-    calib_loader = prepare_calibration_loader(calib_dataset, batch_size=options['batch_size'])
+    calib_loader = prepare_calibration_loader(calib_dataset, batch_size=options['batch_size'], options=options)
     
     # 3. Quantize the model
     success = quantize_model(model, calib_loader, output_dir, options)
