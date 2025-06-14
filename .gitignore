@@ -6,9 +6,6 @@
 # Model binaries and FPGA outputs
 # -----------------------------------------------------------------------------
 *.xmodel
-*.onnx
-models/onnx/standard/
-models/onnx/quantized/
 
 # Exceptions - keep directory structure with .gitkeep
 !models/onnx/standard/.gitkeep

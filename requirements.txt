@@ -1,4 +1,3 @@
-
 # requirements.txt for fpga-cnn-deployment
 # This file lists all Python dependencies required to run scripts and tools in this repository.
 # 
@@ -28,7 +27,9 @@ torch>=2.0.0
 torchvision>=0.15.0
 
 # ONNX runtime for model inference
-onnxruntime>=1.15.0
+onnxruntime==1.13.1
+# ONNX core for model loading and manipulation
+onnx==1.12.0
 
 # Data processing and visualization
 numpy>=1.24.0
@@ -36,6 +37,19 @@ pandas>=2.0.0
 matplotlib>=3.7.0
 pillow>=10.0.0
 opencv-python>=4.8.0
+
+# Vitis AI dependencies
+# Note: These are typically installed with the Vitis AI Docker container 
+# and are listed here for reference only.
+# pytorch-nndct>=3.0          # PyTorch quantization and optimization support
+# tensorflow-nndct>=3.0       # TensorFlow quantization and optimization support  
+# vai_q_onnx>=3.0             # ONNX quantization support
+# vai_o_onnx>=3.0             # ONNX optimization support
+# xir>=1.0                    # Xilinx Intermediate Representation
+# target-factory>=1.0         # Xilinx Target Factory
+
+# Progress bar utility
+tqdm>=4.65.0
 
 # -----------------------------------------------------------------------------
 # CUDA support configurations

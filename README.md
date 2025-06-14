@@ -16,11 +16,45 @@ conda activate fpga-cnn
 pip install --upgrade pip
 pip install -r requirements.txt
 
+# Set up your environment (adds ~/.local/bin to PATH)
+source setup_env.sh
+
 # Verify your installation
-python env_check.py
+python3 env_check.py
 ```
 
 *For GPU acceleration (recommended for benchmarking), refer to the `requirements.txt` file*
+
+#### For Vitis AI Optimization and Quantization
+
+For model optimization and quantization with Vitis AI, you need to use the Xilinx Vitis AI Docker container:
+
+```bash
+# Use the provided helper script to start the Docker container
+./run_vitis_docker.sh
+
+# Inside the container, you can run optimization and quantization scripts
+python3 scripts/optimization/optimize_model.py --help
+python3 scripts/quantization/quantize_model.py --help
+
+# Example: Optimize and quantize a model with random selection of calibration data
+python3 scripts/optimization/optimize_model.py --model models/onnx/resnet18-v1-7.onnx --format onnx --pruning --arch_opt
+python3 scripts/quantization/quantize_model.py --model models/optimized/resnet18-v1-7/final_optimized_model.onnx --format onnx --random_selection
+```
+
+Alternatively, you can run the Docker container manually:
+
+```bash
+# Pull the Vitis AI Docker image
+docker pull xilinx/vitis-ai-pytorch-cpu:latest
+
+# Run the Docker container, mounting your project directory
+docker run -it --rm -v /path/to/fpga-cnn-deployment:/workspace xilinx/vitis-ai-pytorch-cpu:latest
+
+# Inside the container, set up the environment
+cd /workspace
+source setup_env.sh
+```
 
 ### 2. Prepare Data
 
